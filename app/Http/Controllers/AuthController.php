@@ -14,7 +14,8 @@ class AuthController extends Controller
         $fields = $request->validate([
                 'name' => 'required|string',
                 'email' => 'required|string|unique:users,email',
-                'password' => 'required|string|confirmed'
+                'password' => 'required|string|confirmed',
+                'role'=>'required|integer'
           ]
         );
 
@@ -22,7 +23,8 @@ class AuthController extends Controller
             [
                 'name' => $fields['name'],
                 'email' => $fields['email'],
-                'password' => bcrypt($fields['password'])
+                'password' => bcrypt($fields['password']),
+                'role'=> $fields['role']
             ]
         );
 
