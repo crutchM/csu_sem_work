@@ -15,7 +15,7 @@ class AuthController extends Controller
                 'name' => 'required|string',
                 'email' => 'required|string|unique:users,email',
                 'password' => 'required|string|confirmed',
-                'role'=>'required|integer'
+                'role_id'=>'required|integer'
           ]
         );
 
@@ -24,7 +24,7 @@ class AuthController extends Controller
                 'name' => $fields['name'],
                 'email' => $fields['email'],
                 'password' => bcrypt($fields['password']),
-                'role'=> $fields['role']
+                'role_id'=> $fields['role_id'],
             ]
         );
 
