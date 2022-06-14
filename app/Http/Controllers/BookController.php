@@ -58,6 +58,11 @@ class BookController extends Controller
             'redactor_id' => $fields['redactor_id']
         ]);
 
+        RoadMap::create([
+            'comment'=>'the book ' . $book->name . ' was created by ' . User::find(auth()->user()->id),
+            'book_id'=>$book->id
+        ]);
+
         return response(['book'=>$book]);
     }
 
