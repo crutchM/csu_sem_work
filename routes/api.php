@@ -31,7 +31,7 @@ Route::group(['middleware' => 'auth:sanctum', 'prefix'=>'users'], function () {
     Route::get('/aworks', [UsersController::class, 'getAuthorWorks']);
     Route::get('/rworks', [UsersController::class, 'getRedactorWorks']);
     Route::get('/lworks', [UsersController::class, 'getIllustratorWorks']);
-    Route::get('/allusers', [UsersController::class, 'getAllUsers']);
+    Route::get('/all', [UsersController::class, 'getAllUsers']);
     Route::get('/deleta', [UsersController::class, 'delete']);
     Route::get('/deleter', [UsersController::class, 'deleteRedactor']);
     Route::get('/deletei', [UsersController::class, 'deleteIllustrator']);
@@ -40,15 +40,15 @@ Route::group(['middleware' => 'auth:sanctum', 'prefix'=>'users'], function () {
 
 
 Route::group(['middleware' => 'auth:sanctum', 'prefix' => 'book'], function () {
-    Route::post('/createbook', [BookController::class, 'create']);
+    Route::post('/create', [BookController::class, 'create']);
     Route::get('/all', [BookController::class, 'getAll']);
     Route::post('/name', [BookController::class, 'updateName']);
     Route::post('/content', [BookController::class, 'updateContent']);
     Route::post('/illustrator', [BookController::class, 'changeIllustrator']);
     Route::post('/redactor', [BookController::class, 'changeRedactor']);
     Route::post('/delete', [BookController::class, 'delete']);
-    Route::post('/author', [BookController::class, 'getByUser']);
-    Route::post('/get', [BookController::class, 'getById']);
+    Route::get('/author', [BookController::class, 'getByUser']);
+    Route::get('/get', [BookController::class, 'getById']);
 
 });
 
