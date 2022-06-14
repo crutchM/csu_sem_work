@@ -8,8 +8,40 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+
 class BookController extends Controller
 {
+    public function getAll(){
+        return response([
+            'books'=>Book::all()
+        ]);
+    }
+
+    public function getByUser(Request $request){
+        $book = DB::table('books')->where('author_id', '=', $request->input('id'))->get();
+        if ($book==null){
+            $book = DB::table('books')->where('redactor_id', '=', $request->input('id'))->get();
+            if ($book == null){
+                $book = DB::table('books')->where('illustrator_id', '=', $request->input('id'))->get();
+            }
+        }
+        if($book == null){
+            return response(['message'=>'not found']);
+        }
+        return response(['book'=> $book]);
+    }
+
+    public function getById(Request $request){
+        $book = Book::find($request->input('id'));
+        if ($book == null){
+            return response(['message'=>'not found']);
+        }
+
+        return response(['book'=>$book]);
+    }
+
+
     public function create(Request $request){
         $fields = $request->validate([
             'name' => 'string|unique',
@@ -51,7 +83,7 @@ class BookController extends Controller
         ]);
     }
 
-    private function getRole(){
+    protected function getRole(){
         return Role::find(auth()->user()->role_id)->name;
     }
 
@@ -75,5 +107,15 @@ class BookController extends Controller
         ]);
 
         return response(['message'=>'success']);
+    }
+
+
+    public function delete(Request $request){
+        $book = Book::find($request->input('id'));
+        DB::table('road_maps')->where('book_id', '=', $request->input('id'))->delete();
+        DB::table('books')->where('id', '=',$request->input('id'))->delete();
+        return response([
+            'message'=>'book '. $book->name . ' successfully deleted'
+        ]);
     }
 }

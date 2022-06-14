@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Categories;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CategoriesController extends Controller
 {
@@ -19,5 +20,9 @@ class CategoriesController extends Controller
         return response([
             "categories" => Categories::all()
         ]);
+    }
+
+    public function delete(Request $request){
+        DB::table('categories')->where('id', '=', $request->input('id'))->delete();
     }
 }

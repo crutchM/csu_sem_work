@@ -6,6 +6,7 @@ use \App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\UsersController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -18,21 +19,36 @@ use App\Http\Controllers\UsersController;
 */
 
 
-Route::group(['middleware'=> 'auth:sanctum'], function (){
+Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/category', [CategoriesController::class, 'create']);
     Route::get('/allcategories', [CategoriesController::class, 'getAll']);
+    Route::get('/delete', [CategoriesController::class, 'delete']);
+    Route::get('/roadmap', [\App\Http\Controllers\RoadMapController::class, 'getByBook']);
+});
+
+Route::group(['middleware' => 'auth:sanctum', 'prefix'=>'users'], function () {
+    Route::get('/aworks', [UsersController::class, 'getAuthorWorks']);
+    Route::get('/rworks', [UsersController::class, 'getRedactorWorks']);
+    Route::get('/lworks', [UsersController::class, 'getIllustratorWorks']);
+    Route::get('/allusers', [UsersController::class, 'getAllUsers']);
+    Route::get('/deleta', [UsersController::class, 'delete']);
+    Route::get('/deleter', [UsersController::class, 'deleteRedactor']);
+    Route::get('/deletei', [UsersController::class, 'deleteIllustrator']);
+
+});
+
+
+Route::group(['middleware' => 'auth:sanctum', 'prefix' => 'book'], function () {
     Route::post('/createbook', [BookController::class, 'create']);
+    Route::get('/all', [BookController::class, 'getAll']);
     Route::post('/name', [BookController::class, 'updateName']);
     Route::post('/content', [BookController::class, 'updateContent']);
     Route::post('/illustrator', [BookController::class, 'changeIllustrator']);
     Route::post('/redactor', [BookController::class, 'changeRedactor']);
-    Route::get('/aworks', [UsersController::class,'getAuthorWorks']);
-    Route::get('/rworks', [UsersController::class,'getRedactorWorks']);
-    Route::get('/lworks', [UsersController::class,'getIllustratorWorks']);
-    Route::get('/allusers', [UsersController::class, 'getAllUsers']);
-    Route::get('/roadmap', [\App\Http\Controllers\RoadMapController::class, 'getByBook']);
+    Route::post('/delete', [BookController::class, 'delete']);
 });
+
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
