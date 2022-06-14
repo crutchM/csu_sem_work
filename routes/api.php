@@ -47,6 +47,9 @@ Route::group(['middleware' => 'auth:sanctum', 'prefix' => 'book'], function () {
     Route::post('/illustrator', [BookController::class, 'changeIllustrator']);
     Route::post('/redactor', [BookController::class, 'changeRedactor']);
     Route::post('/delete', [BookController::class, 'delete']);
+    Route::post('/author', [BookController::class, 'getByUser']);
+    Route::post('/get', [BookController::class, 'getById']);
+
 });
 
 
